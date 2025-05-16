@@ -26,8 +26,7 @@ You can customize the widget through the URL by changing parameters:
 | `country`  | `US`                   | 2-letter ISO country code              |
 | `timezone` | `America/Chicago`      | Timezone using the [TZ database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) |
 
-✅ Example: [index.html?city=Los%20Angeles&state=CA&country=US&timezone=America/Los_Angeles
-](https://batz736.github.io/weather-widget/index.html?city=&state=&country=US&timezone=)
+✅ Example: [index.html?city=&state=&country=US&timezone=](https://batz736.github.io/weather-widget/index.html?city=&state=&country=US&timezone=)
 
 ### 4. Designed for OBS
 - The widget is meant to be loaded in OBS as a **Browser Source**.
