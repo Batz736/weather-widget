@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Customizable Weather & Time Widget</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: transparent;
+      color: white;
+    }
+    .widget {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      line-height: 1.6;
+      width: fit-content;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget">
+    <div id="datetime">Loading time...</div>
+    <div id="weather">Loading weather...</div>
+  </div>
+
+  <script>
+    function getQueryParam(name, defaultValue) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name) || defaultValue;
+    }
+
+    const city = getQueryParam('city', 'Arlington');
+    const state = getQueryParam('state', 'TX');
+    const country = getQueryParam('country', 'US');
+    const timezone = getQueryParam('timezone', 'America/Chicago');
+
+    function updateTime() {
+      const now = new Date();
+      const optionsDate = {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+        timeZone: timezone
+      };
+      const optionsTime = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZone: timezone,
+        timeZoneName: 'short'
+      };
+
+      const time = now.toLocaleTimeString('en-US', optionsTime).replace(',', '');
+      const date = now.toLocaleDateString('en-US', optionsDate);
+      document.getElementById('datetime').textContent = `${time} | ${date}`;
+    }
+
+    async function updateWeather() {
+      try {
+        const locationQuery = encodeURIComponent(`${city}${state ? ',' + state : ''}${country ? ',' + country : ''}`);
+        const url = `https://wttr.in/${locationQuery}?format=j1`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        const current = data.current_condition[0];
+        const tempF = current.temp_F;
+        const tempC = current.temp_C;
+        const feelsF = current.FeelsLikeF;
+        const feelsC = current.FeelsLikeC;
+        const desc = current.weatherDesc[0].value;
+        const humidity = current.humidity;
+
+        document.getElementById('weather').textContent =
+          `${desc} | ${tempF}F / ${tempC}C (Feels like ${feelsF}F / ${feelsC}C) | ${humidity}%`;
+      } catch (err) {
+        document.getElementById('weather').textContent = "Unable to load weather.";
+      }
+    }
+
+    updateTime();
+    updateWeather();
+    setInterval(updateTime, 1000);
+    setInterval(updateWeather, 600000);
+  </script>
+</body>
+</html>
