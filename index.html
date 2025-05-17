@@ -34,10 +34,10 @@
       return params.get(name) || defaultValue;
     }
 
-    const city = getQueryParam('city', 'Arlington');
-    const state = getQueryParam('state', 'TX');
-    const country = getQueryParam('country', 'US');
-    const timezone = getQueryParam('timezone', 'America/Chicago');
+    const city = getQueryParam('city', '');
+    const state = getQueryParam('state', '');
+    const country = getQueryParam('country', '');
+    const timezone = getQueryParam('timezone', '');
 
     function updateTime() {
       const now = new Date();
